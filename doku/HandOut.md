@@ -87,7 +87,6 @@ Jeder Run liefert:
 
 ## 🧠 Wichtig für Helfer
 - Keine Panik bei falscher Startnummer → kann korrigiert werden
-- 
 - Zeitmessung kommt vom Tor, nicht vom Foto
 
 Bei Problemen:
