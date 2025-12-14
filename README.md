@@ -69,3 +69,11 @@ RallyControl befindet sich in aktiver Entwicklung. Ziel ist ein stabiles, modula
 - Offline-Pufferung an den Gates
 - Benutzer- & Rollenverwaltung
 - REST-API für externe Anzeigen
+
+## Development Quickstart (Django Admin + Stammdaten)
+- Prereqs: Python 3.11+ (entwickelt mit 3.13).
+- Setup: `python -m venv .venv && .\.venv\Scripts\Activate.ps1 && pip install -r requirements.txt`
+- Datenbank: `python manage.py migrate` (SQLite per Default).
+- Benutzer: `python manage.py createsuperuser` (Custom User mit Rollen `admin`, `operator`, `viewer`).
+- Starten: `python manage.py runserver` und im Browser auf `http://localhost:8000` (Dashboard/Landing) bzw. `/admin/` (Django Admin).
+- Stammdaten: Fahrer, Fahrzeuge, Klassen, Events, Stages, Sessions und Gates k�nnen �ber das Dashboard (UI) oder den Admin gepflegt werden.

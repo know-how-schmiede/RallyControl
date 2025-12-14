@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Stammdaten</p>
+        <h1>{{ model_verbose_name_plural|title }}</h1>
+    </div>
+    <div class="actions">
+        <a class="button" href="{{ create_url }}">Neu</a>
+    </div>
+</section>
+
+<div class="card">
+    <table class="data-table">
+        <thead>
+            <tr>
+                {% for col in columns %}
+                    <th>{{ col.label|capfirst }}</th>
+                {% endfor %}
+                <th>Aktion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    {% for value in row.values %}
+                        <td>{{ value|default:"—" }}</td>
+                    {% endfor %}
+                    <td><a href="{{ row.edit_url }}">Bearbeiten</a></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="{{ list_display|length|add:1 }}">Noch keine Einträge vorhanden.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

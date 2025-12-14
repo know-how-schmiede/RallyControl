@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title|default:"RallyControl" }}</title>
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand-mark">RC</span>
+            <span class="brand-name">RallyControl</span>
+        </div>
+        <nav class="nav">
+            {% for item in nav_items %}
+                {% url item.url_name as target %}
+                <a href="{{ target }}" class="{% if request.path == target %}active{% endif %}">
+                    {{ item.label }}
+                </a>
+            {% endfor %}
+            <a href="{% url 'admin:index' %}" class="ghost">Admin</a>
+        </nav>
+    </header>
+
+    <main class="page">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <small>RallyControl · Web-basiert · RC-Rally</small>
+    </footer>
+</body>
+</html>

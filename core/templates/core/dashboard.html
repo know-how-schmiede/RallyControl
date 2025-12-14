@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Landing Page</p>
+        <h1>RallyControl Dashboard</h1>
+        <p class="lede">
+            Web-basierte Zeiterfassung und Verwaltung für RC-Rally-Rennen.
+            Stammdaten jetzt anlegen, später live Zeiten streamen.
+        </p>
+    </div>
+    <div class="hero-card">
+        <div class="hero-label">Schnellzugriff</div>
+        <div class="hero-actions">
+            <a class="button" href="{% url 'core:driver_create' %}">Fahrer erfassen</a>
+            <a class="button ghost" href="{% url 'core:event_create' %}">Event planen</a>
+        </div>
+    </div>
+</section>
+
+<section class="grid">
+    {% for key, value in stats.items %}
+        <div class="card">
+            <p class="eyebrow">{{ key|title }}</p>
+            <div class="stat">{{ value }}</div>
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}
