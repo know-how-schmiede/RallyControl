@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RC Overlay Views</title>
+  <style>
+    body { margin:0; background:transparent; font-family: Arial, sans-serif; overflow:hidden; color:#fff; }
+    .panel {
+      width: 520px;
+      background: rgba(0, 41, 11, 0.85);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .title { font-size: 22px; font-weight: 700; margin-bottom: 10px; opacity: 0.95; }
+    .row { display:flex; justify-content:space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
+    .row:last-child { border-bottom: none; }
+    .muted { opacity: 0.85; font-size: 16px; }
+    .big { font-size: 34px; font-weight: 800; }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <!-- VIEW: LAPS -->
+    <div id="view-laps">
+      <div class="title">Lauf #12 · Live-Rundenzeit</div>
+      <div class="big" id="lap-timer">0.00 s</div>
+      <div class="muted" id="lap-info">Fahrer: #7 · Runde 3</div>
+    </div>
+
+    <!-- VIEW: LEADERBOARD -->
+    <div id="view-board" class="hidden">
+      <div class="title">Rangliste · Lauf #12</div>
+      <div id="board-list"></div>
+    </div>
+  </div>
+
+  <script>
+    // --- UI helpers ---
+    const viewLaps  = document.getElementById("view-laps");
+    const viewBoard = document.getElementById("view-board");
+    const lapTimerEl = document.getElementById("lap-timer");
+    const lapInfoEl  = document.getElementById("lap-info");
+    const boardListEl = document.getElementById("board-list");
+
+    function showView(name) {
+      viewLaps.classList.toggle("hidden", name !== "laps");
+      viewBoard.classList.toggle("hidden", name !== "leaderboard");
+    }
+
+    function renderLeaderboard(items) {
+      boardListEl.innerHTML = "";
+      items.forEach((it, idx) => {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.innerHTML = `<div>#${idx+1} ${it.driver}</div><div>${it.best}s</div>`;
+        boardListEl.appendChild(row);
+      });
+    }
+
+    // --- DEMO state machine (ersetzt du später durch Server-State) ---
+    let lapStart = performance.now();
+    let running = true;
+
+    function tickLap() {
+      if (running) {
+        const t = (performance.now() - lapStart) / 1000;
+        lapTimerEl.textContent = `${t.toFixed(2)} s`;
+      }
+      requestAnimationFrame(tickLap);
+    }
+    requestAnimationFrame(tickLap);
+
+    // Demo: alle 10s Ergebnis-Rangliste zeigen, dann wieder Laps
+    const demoBoard = [
+      { driver: "Fahrer #7",  best: "18.201" },
+      { driver: "Fahrer #12", best: "18.432" },
+      { driver: "Fahrer #3",  best: "19.004" },
+      { driver: "Fahrer #9",  best: "19.210" },
+    ];
+
+    function startRun(runNo) {
+      showView("laps");
+      running = true;
+      lapStart = performance.now();
+      lapInfoEl.textContent = `Fahrer: #7 · Runde 1 · Lauf #${runNo}`;
+    }
+
+    function showResults(runNo) {
+      running = false;
+      showView("leaderboard");
+      renderLeaderboard(demoBoard);
+    }
+
+    // Ablauf demo
+    let runNo = 12;
+    startRun(runNo);
+    setInterval(() => {
+      showResults(runNo);
+      setTimeout(() => {
+        runNo++;
+        startRun(runNo);
+      }, 6000);
+    }, 16000);
+  </script>
+</body>
+</html>
